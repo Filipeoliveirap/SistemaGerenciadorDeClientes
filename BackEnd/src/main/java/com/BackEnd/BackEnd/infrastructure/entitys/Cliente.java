@@ -1,8 +1,5 @@
 package com.BackEnd.BackEnd.infrastructure.entitys;
 
-<<<<<<< HEAD
-public class Cliente {
-=======
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,5 +44,4 @@ public class Cliente {
 
     @Column("data_nascimento")
     private LocalDate dataNascimento;
->>>>>>> 8b0f4f6e312de84a28904bcc8b907f5f0343ee3c
 }
