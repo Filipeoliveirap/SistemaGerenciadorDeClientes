@@ -1,4 +1,4 @@
-package com.BackEnd.BackEnd.Controller;
+package com.BackEnd.BackEnd.controller;
 
 public class ClienteController {
 }
