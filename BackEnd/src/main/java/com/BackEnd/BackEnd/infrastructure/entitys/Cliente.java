@@ -20,7 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table("cliente")
+@Table("clientes")
 public class Cliente {
 
     @PrimaryKey
