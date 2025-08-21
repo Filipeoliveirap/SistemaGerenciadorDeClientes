@@ -25,10 +25,40 @@ export default function Clientes() {
     });
   };
 
+  //buscar cliente por filtro
+  const buscarCliente = () => {
+    if (busca.trim() === "") {
+      carregarClientes();
+    } else {
+      axios
+        .get(`http://localhost:8080/clientes/buscar?valor=${busca}`)
+        .then((response) => {
+          setClientes(response.data);
+        });
+    }
+  };
+
+  const buscarPorId = (id) => {
+    axios.get(`http://localhost:8080/clientes/${id}`).then((response) => {
+      setClientes([response.data]);
+    });
+  };
+
   const handleShow = (cliente = null) => {
-    if (cliente) setClienteAtualizar(cliente);
+    setClienteAtualizar(cliente);
+    setNovoCliente(
+      cliente
+        ? {
+            nome: cliente.nome,
+            email: cliente.email,
+            cpf: cliente.cpf,
+            dataNascimento: cliente.dataNascimento,
+          }
+        : { nome: "", email: "", cpf: "", dataNascimento: "" }
+    );
     setShowModal(true);
   };
+
   const handleClose = () => {
     setShowModal(false);
     setClienteAtualizar(null);
@@ -41,7 +71,7 @@ export default function Clientes() {
 
   // Salvar ou atualizar cliente
   const handleSalvar = () => {
-    if (clienteAtualizar) {
+    if (clienteAtualizar && clienteAtualizar.id) {
       // Atualizar
       axios
         .put(
@@ -96,6 +126,7 @@ export default function Clientes() {
       <h1 className="mb-4">Gerenciamento de Clientes</h1>
 
       {/* Campo de busca */}
+
       <Form.Control
         type="text"
         placeholder="Buscar por nome, email ou CPF..."
@@ -106,6 +137,11 @@ export default function Clientes() {
           marginBottom: "20px",
           borderRadius: "10px",
           padding: "10px",
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            buscarCliente();
+          }
         }}
       />
 
@@ -141,13 +177,14 @@ export default function Clientes() {
                   size="sm"
                   style={{ marginRight: "5px" }}
                   onClick={() => {
+                    setClienteAtualizar(cliente);
                     setNovoCliente({
                       nome: cliente.nome,
                       email: cliente.email,
                       cpf: cliente.cpf,
                       dataNascimento: cliente.dataNascimento,
                     });
-                    handleShow(cliente);
+                    setShowModal(true);
                   }}
                 >
                   Atualizar
@@ -173,7 +210,7 @@ export default function Clientes() {
           borderRadius: "10px",
           padding: "10px 20px",
         }}
-        onClick={handleShow}
+        onClick={() => handleShow(null)}
       >
         Cadastrar Cliente
       </Button>
